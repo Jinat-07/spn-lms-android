@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4  # Updated to v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4  # Updated to v4
         with:
           node-version: '18'
 
@@ -22,10 +22,10 @@ jobs:
         run: npm install
 
       - name: Create Dummy Web Folder
-        run: mkdir www && echo "<h1>Loading SPN EdTech...</h1>" > www/index.html
+        run: mkdir -p www && echo "<h1>Loading SPN EdTech...</h1>" > www/index.html
 
       - name: Organize Assets
-        # This moves your uploaded images to a folder where the tool can find them
+        # আইকনগুলো সঠিক ফোল্ডারে পাঠানো হচ্ছে
         run: |
           mkdir -p assets
           mv icon.png assets/icon.png || echo "No icon found, using default"
@@ -35,7 +35,7 @@ jobs:
         run: npx cap add android
 
       - name: Generate Icons and Splash
-        # This magically creates all icon sizes for Android
+        # অটোমেটিক আইকন জেনারেট করা হচ্ছে
         run: npx capacitor-assets generate --android
 
       - name: Sync Config
@@ -46,7 +46,7 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # FIXED: Updated from v3 to v4
         with:
           name: SPN-EdTech-App
           path: android/app/build/outputs/apk/debug/app-debug.apk
