@@ -1,0 +1,52 @@
+name: Build SPN Live APK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Create Dummy Web Folder
+        run: mkdir www && echo "<h1>Loading SPN EdTech...</h1>" > www/index.html
+
+      - name: Organize Assets
+        # This moves your uploaded images to a folder where the tool can find them
+        run: |
+          mkdir -p assets
+          mv icon.png assets/icon.png || echo "No icon found, using default"
+          mv splash.png assets/splash.png || echo "No splash found, using default"
+
+      - name: Initialize Capacitor
+        run: npx cap add android
+
+      - name: Generate Icons and Splash
+        # This magically creates all icon sizes for Android
+        run: npx capacitor-assets generate --android
+
+      - name: Sync Config
+        run: npx cap sync android
+
+      - name: Build APK
+        working-directory: ./android
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: SPN-EdTech-App
+          path: android/app/build/outputs/apk/debug/app-debug.apk
