@@ -1,0 +1,21 @@
+{
+  "appId": "in.spnedtech.app",
+  "appName": "SPN EdTech",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://app.spnedtech.in",
+    "cleartext": true,
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 3000,
+      "launchAutoHide": true,
+      "backgroundColor": "#ffffffff",
+      "androidSplashResourceName": "splash",
+      "showSpinner": true,
+      "spinnerColor": "#2563eb"
+    }
+  }
+}
